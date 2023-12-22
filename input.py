@@ -16,32 +16,17 @@ keyboard_mapping_eng = {
     '"': 'э', 'Z': 'я', 'X': 'ч', 'C': 'с', 'V': 'м', 'B': 'и', 'N': 'т', 'M': 'ь', '<': 'б', '>': 'ю', '~': 'ё'
 }
 
-def transform_text_rus(text):
+def transform_text(text, mapping):
     transformed_text = ''
     for char in text:
-        if char in keyboard_mapping_rus:
-            transformed_text += keyboard_mapping_rus[char]
+        if char in mapping:
+            transformed_text += mapping[char]
+        elif char.lower() in mapping:
+            transformed_text += mapping[char.lower()].upper() if char.isupper() else mapping[char.lower()]
         elif char.lower() == 'g':
-            transformed_text += 'г' 
+            transformed_text += 'г' if char.islower() else 'Г'
         elif char.lower() == 'h':
-            transformed_text += 'н'  
-        elif char.isupper() and char.lower() in keyboard_mapping_rus:
-            transformed_text += keyboard_mapping_rus[char.lower()].upper()
-        else:
-            transformed_text += char
-    return transformed_text
-
-def transform_text_eng(text):
-    transformed_text = ''
-    for char in text:
-        if char in keyboard_mapping_eng:
-            transformed_text += keyboard_mapping_eng[char]
-        elif char.lower() == 'г':
-            transformed_text += 'g' 
-        elif char.lower() == 'н':
-            transformed_text += 'h'  
-        elif char.isupper() and char.lower() in keyboard_mapping_eng:
-            transformed_text += keyboard_mapping_eng[char.lower()].upper()
+            transformed_text += 'н' if char.islower() else 'Н'
         else:
             transformed_text += char
     return transformed_text
@@ -50,11 +35,11 @@ language = input("Выберите язык (русский - 'rus', англи�
 
 if language == 'rus':
     input_text = input("Введите текст: ")
-    transformed_text = transform_text_rus(input_text)
+    transformed_text = transform_text(input_text, keyboard_mapping_rus)
     print(transformed_text)
 elif language == 'eng':
     input_text = input("Enter text: ")
-    transformed_text = transform_text_eng(input_text)
+    transformed_text = transform_text(input_text, keyboard_mapping_eng)
     print(transformed_text)
 else:
     print("Выбран неверный язык.")
