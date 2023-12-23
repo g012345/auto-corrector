@@ -18,17 +18,25 @@ keyboard_mapping_eng = {
 
 def transform_text(text, mapping):
     transformed_text = ''
+    inside_quotes = False
     for char in text:
-        if char in mapping:
-            transformed_text += mapping[char]
-        elif char.lower() in mapping:
-            transformed_text += mapping[char.lower()].upper() if char.isupper() else mapping[char.lower()]
-        elif char.lower() == 'g':
-            transformed_text += 'г' if char.islower() else 'Г'
-        elif char.lower() == 'h':
-            transformed_text += 'н' if char.islower() else 'Н'
+        if char == "'" or char == '"':
+            inside_quotes = not inside_quotes
+
+        if not inside_quotes:
+            if char in mapping:
+                transformed_text += mapping[char]
+            elif char.lower() in mapping:
+                transformed_text += mapping[char.lower()].upper() if char.isupper() else mapping[char.lower()]
+            elif char.lower() == 'g':
+                transformed_text += 'г' if char.islower() else 'Г'
+            elif char.lower() == 'h':
+                transformed_text += 'н' if char.islower() else 'Н'
+            else:
+                transformed_text += char
         else:
             transformed_text += char
+
     return transformed_text
 
 language = input("Выберите язык (русский - 'rus', английский - 'eng'): ")
