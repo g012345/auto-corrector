@@ -1,3 +1,5 @@
+import tkinter as tk
+
 keyboard_mapping_rus = {
     'й': 'q', 'ц': 'w', 'у': 'e', 'к': 'r', 'е': 't', 'н': 'y', 'г': 'u', 'ш': 'i', 'щ': 'o', 'з': 'p', 'х': '[',
     'ъ': ']', 'ф': 'a', 'ы': 's', 'в': 'd', 'а': 'f', 'п': 'g', 'р': 'h', 'о': 'j', 'л': 'k', 'д': 'l', 'ж': ';',
@@ -39,15 +41,39 @@ def transform_text(text, mapping):
 
     return transformed_text
 
-language = input("Выберите язык (русский - 'rus', английский - 'eng'): ")
+def handle_transform():
+    language = language_var.get()
+    input_text = text_entry.get()
+    if language == 'rus':
+        transformed_text = transform_text(input_text, keyboard_mapping_rus)
+    elif language == 'eng':
+        transformed_text = transform_text(input_text, keyboard_mapping_eng)
+    else:
+        transformed_text = "Выбран неверный язык."
+    result_label.config(text=transformed_text)
 
-if language == 'rus':
-    input_text = input("Введите текст: ")
-    transformed_text = transform_text(input_text, keyboard_mapping_rus)
-    print(transformed_text)
-elif language == 'eng':
-    input_text = input("Enter text: ")
-    transformed_text = transform_text(input_text, keyboard_mapping_eng)
-    print(transformed_text)
-else:
-    print("Выбран неверный язык.")
+root = tk.Tk()
+root.title("Keyboard Transformation")
+
+language_var = tk.StringVar()
+language_var.set("rus")
+
+language_label = tk.Label(root, text="Выберите язык (русский - 'rus', английский - 'eng'): ")
+language_label.pack()
+
+language_entry = tk.Entry(root, textvariable=language_var)
+language_entry.pack()
+
+text_label = tk.Label(root, text="Введите текст: ")
+text_label.pack()
+
+text_entry = tk.Entry(root)
+text_entry.pack()
+
+submit_button = tk.Button(root, text="Transform", command=handle_transform)
+submit_button.pack()
+
+result_label = tk.Label(root, text="")
+result_label.pack()
+
+root.mainloop()
